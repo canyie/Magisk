@@ -55,7 +55,7 @@ private:
 protected:
     mmap_data self;
     mmap_data magisk_cfg;
-    std::string custom_rules_dir;
+    std::vector<std::string> custom_rules_dirs;
 
 #if ENABLE_AVD_HACK
     // When this boolean is set, this means we are currently

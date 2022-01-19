@@ -634,8 +634,16 @@ copy_sepolicy_rules() {
   local RULESDIR
   local ACTIVEDIR=$(magisk --path)/.magisk/mirror/sepolicy.rules
   if [ -L $ACTIVEDIR ]; then
-    RULESDIR=$(readlink $ACTIVEDIR)
-    [ "${RULESDIR:0:1}" != "/" ] && RULESDIR="$(magisk --path)/.magisk/mirror/$RULESDIR"
+    ACTIVEDIR=$(readlink $ACTIVEDIR)
+    [ "${ACTIVEDIR:0:1}" != "/" ] && ACTIVEDIR="$(magisk --path)/.magisk/mirror/$ACTIVEDIR"
+
+    # Some devices has /cache or /metadata in their fstab but doesn't actually mount
+    [ -d ${ACTIVEDIR%/magisk} ] || unset ACTIVEDIR
+  else
+    unset ACTIVEDIR
+  fi
+  if [ -n "$ACTIVEDIR" ]; then
+    RULESDIR=$ACTIVEDIR
   elif ! $ISENCRYPTED; then
     RULESDIR=$NVBASE/modules
   elif [ -d /data/unencrypted ] && ! grep ' /data ' /proc/mounts | grep -qE 'dm-|f2fs'; then
@@ -653,12 +661,7 @@ copy_sepolicy_rules() {
     return 1
   fi
 
-  if [ -d ${RULESDIR%/magisk} ]; then
-    ui_print "- Sepolicy rules dir is ${RULESDIR%/magisk}"
-  else
-    ui_print "- Sepolicy rules dir ${RULESDIR%/magisk} not found"
-    return 1
-  fi
+  ui_print "- Sepolicy rules dir is ${RULESDIR%/magisk}"
 
   # Copy all enabled sepolicy.rule
   for r in $NVBASE/modules*/*/sepolicy.rule; do
