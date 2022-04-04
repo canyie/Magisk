@@ -472,6 +472,11 @@ void HookContext::nativeSpecializeAppProcess_pre() {
     if ((flags & UNMOUNT_MASK) == UNMOUNT_MASK) {
         ZLOGI("[%s] is on the denylist\n", process);
         state[DO_UNMOUNT] = true;
+
+        // Ensure separated namespace, allow denylist to handle isolated process before Android 11
+        if (args->mount_external == 0 /* MOUNT_EXTERNAL_NONE */) {
+            args->mount_external = 1 /* MOUNT_EXTERNAL_DEFAULT */;
+        }
     } else if (fd >= 0) {
         run_modules_pre(module_fds);
     }
