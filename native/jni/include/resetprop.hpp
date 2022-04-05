@@ -10,4 +10,5 @@ void getprops(void (*callback)(const char *, const char *, void *),
         void *cookie = nullptr, bool persist = false, bool context = false);
 int delprop(const char *name, bool persist = false);
 void load_prop_file(const char *filename, bool prop_svc = true);
+void parse_prop_into(const char *file, std::map<std::string, std::string> &map);
 void get_prop_context(const char* prop, const char** context);

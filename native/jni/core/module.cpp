@@ -584,6 +584,7 @@ void magic_mount() {
     char buf[4096];
     LOGI("* Loading modules\n");
     if (module_list) {
+        std::map<std::string, std::string> isolated_props;
         for (const auto &m : *module_list) {
             const char *module = m.name.data();
             char *b = buf + sprintf(buf, "%s/" MODULEMNT "/%s/", MAGISKTMP.data(), module);
@@ -593,6 +594,12 @@ void magic_mount() {
             if (access(buf, F_OK) == 0) {
                 LOGI("%s: loading [system.prop]\n", module);
                 load_prop_file(buf, false);
+            }
+
+            strcpy(b, "isolated.prop");
+            if (access(buf, F_OK) == 0) {
+                LOGI("%s: loading [isolated.prop]\n", module);
+                parse_prop_into(buf, isolated_props);
             }
 
             // Check whether skip mounting
@@ -610,6 +617,10 @@ void magic_mount() {
             int fd = xopen(buf, O_RDONLY | O_CLOEXEC);
             system->collect_files(module, fd);
             close(fd);
+        }
+
+        if (!isolated_props.empty()) {
+            // TODO: Implement prop isolation
         }
     }
     if (MAGISKTMP != "/sbin") {

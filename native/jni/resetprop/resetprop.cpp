@@ -311,6 +311,14 @@ void load_prop_file(const char *filename, bool prop_svc) {
     });
 }
 
+void parse_prop_into(const char *filename, std::map<std::string, std::string> &map) {
+    LOGD("resetprop: Parse prop file [%s]\n", filename);
+    parse_prop_file(filename, [&](auto key, auto val) -> bool {
+        map[key.data()] = val.data();
+        return true;
+    });
+}
+
 void get_prop_context(const char* prop, const char** context) {
     get_impl()->get_prop_context(prop, context);
 }
