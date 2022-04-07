@@ -71,6 +71,11 @@ int __system_property_set_filename(const char* __filename);
 */
 int __system_property_area_init(void);
 
+/* Re-trigger the initialization.
+** Added by resetprop.
+*/
+void __system_properties_reinit(void);
+
 /* Read the global serial number of the system properties
 **
 ** Called to predict if a series of cached __system_property_find

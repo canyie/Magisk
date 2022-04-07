@@ -56,6 +56,9 @@ class SystemProperties {
   BIONIC_DISALLOW_COPY_AND_ASSIGN(SystemProperties);
 
   bool Init(const char* filename);
+  // resetprop added
+  void Reinitialize(const char* filename);
+
   bool AreaInit(const char* filename, bool* fsetxattr_failed);
   uint32_t AreaSerial();
   const prop_info* Find(const char* name);

@@ -324,6 +324,10 @@ void get_prop_context(const char* prop, const char** context, const char** filen
     get_impl()->get_prop_context(prop, context, filename);
 }
 
+void reinit_props() {
+    __system_properties_reinit();
+}
+
 int resetprop_main(int argc, char *argv[]) {
     log_cb.d = [](auto fmt, auto ap) -> int { return verbose ? vfprintf(stderr, fmt, ap) : 0; };
 

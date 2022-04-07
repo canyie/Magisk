@@ -49,6 +49,12 @@ int __system_properties_init() {
   return system_properties.Init(PROP_FILENAME) ? 0 : -1;
 }
 
+// resetprop added
+__BIONIC_WEAK_FOR_NATIVE_BRIDGE
+void __system_properties_reinit() {
+  system_properties.Reinitialize(PROP_FILENAME);
+}
+
 __BIONIC_WEAK_FOR_NATIVE_BRIDGE
 int __system_property_set_filename(const char*) {
   return -1;

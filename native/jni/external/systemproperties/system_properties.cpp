@@ -95,6 +95,15 @@ bool SystemProperties::Init(const char* filename) {
   return true;
 }
 
+void SystemProperties::Reinitialize(const char* filename) {
+  if (initialized_) {
+    contexts_->FreeAndUnmap();
+    contexts_ = nullptr;
+    initialized_ = false;
+  }
+  Init(filename);
+}
+
 bool SystemProperties::AreaInit(const char* filename, bool* fsetxattr_failed) {
   if (strlen(filename) >= PROP_FILENAME_MAX) {
     return false;
