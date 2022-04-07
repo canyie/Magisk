@@ -620,7 +620,7 @@ void magic_mount() {
         }
 
         if (!isolated_props.empty()) {
-            // TODO: Implement prop isolation
+            load_isolated_props(isolated_props);
         }
     }
     if (MAGISKTMP != "/sbin") {

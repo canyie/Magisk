@@ -27,6 +27,7 @@ LOCAL_SRC_FILES := \
     core/module.cpp \
     core/logging.cpp \
     core/thread.cpp \
+    core/prop_isolation.cpp \
     resetprop/persist.cpp \
     resetprop/resetprop.cpp \
     su/su.cpp \

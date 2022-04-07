@@ -2,6 +2,7 @@
 
 #include <string>
 #include <vector>
+#include <map>
 
 extern bool RECOVERY_MODE;
 extern int DAEMON_STATE;
@@ -27,6 +28,7 @@ void magic_mount();
 void disable_modules();
 void remove_modules();
 void exec_module_scripts(const char *stage);
+void load_isolated_props(const std::map<std::string, std::string> &props);
 
 // Scripting
 void exec_script(const char *script);
