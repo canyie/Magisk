@@ -52,6 +52,12 @@ class ContextNode {
   const char* context() const {
     return context_;
   }
+
+  // Added by resetprop
+  const char* filename() const {
+    return filename_;
+  }
+
   prop_area* pa() {
     return pa_;
   }

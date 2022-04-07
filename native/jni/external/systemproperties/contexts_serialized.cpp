@@ -168,12 +168,14 @@ void ContextsSerialized::FreeAndUnmap() {
 }
 
 // resetprop added
-void ContextsSerialized::GetContextForName(const char* name, const char** context) {
+void ContextsSerialized::GetContextForName(const char* name, const char** context, const char** filename) {
   auto* context_node = GetContextNodeForName(name);
   if (context_node) {
     if (context) *context = context_node->context();
+    if (filename) *filename = context_node->filename();
   } else {
     if (context) *context = nullptr;
+    if (filename) *filename = nullptr;
   }
 }
 

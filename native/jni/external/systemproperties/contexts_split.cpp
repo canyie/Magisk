@@ -359,12 +359,14 @@ void ContextsSplit::FreeAndUnmap() {
 }
 
 // resetprop added
-void ContextsSplit::GetContextForName(const char* name, const char** context) {
+void ContextsSplit::GetContextForName(const char* name, const char** context, const char** filename) {
   auto cnode = GetContextNodeForName(name);
   if (cnode) {
     if (context) *context = cnode->context();
+    if (filename) *filename = cnode->filename();
   } else {
     if (context) *context = nullptr;
+    if (filename) *filename = nullptr;
   }
 }
 

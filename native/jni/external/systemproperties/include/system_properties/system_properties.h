@@ -76,7 +76,7 @@ class SystemProperties {
   int Foreach(void (*propfn)(const prop_info* pi, void* cookie), void* cookie);
 
   // Added by resetprop
-  void GetPropContext(const char* prop, const char** context);
+  void GetPropContext(const char* prop, const char** context, const char** filename);
 
  private:
   // We don't want to use new or malloc in properties (b/31659220), and we don't want to waste a

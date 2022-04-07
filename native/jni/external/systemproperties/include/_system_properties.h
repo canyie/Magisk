@@ -131,7 +131,7 @@ uint32_t __system_property_serial(const prop_info* __pi);
 /* Get property of a property.
 ** Added by resetprop.
 */
-void __system_property_get_context(const char* prop, const char** context);
+void __system_property_get_context(const char* prop, const char** context, const char** filename);
 
 /* Initialize the system properties area in read only mode.
  * Should be done by all processes that need to read system

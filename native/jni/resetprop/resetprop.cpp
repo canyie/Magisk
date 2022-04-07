@@ -123,8 +123,9 @@ struct sysprop_stub {
     virtual void getprops(void (*callback)(const char *, const char *, void *),
             void *cookie, bool persist, bool context) {}
     virtual int delprop(const char *name, bool persist) { return 1; }
-    virtual void get_prop_context(const char* prop, const char** context) {
+    virtual void get_prop_context(const char* prop, const char** context, const char** filename) {
         *context = nullptr;
+        *filename = nullptr;
     }
 };
 
@@ -226,7 +227,7 @@ struct resetprop : public sysprop {
         for (auto &[key, val] : list) {
             const char* v;
             if (context)
-                ::get_prop_context(key.data(), &v);
+                ::get_prop_context(key.data(), &v, nullptr);
             else
                 v = val.data();
             callback(key.data(), v, cookie);
@@ -247,8 +248,8 @@ struct resetprop : public sysprop {
         return ret;
     }
 
-    void get_prop_context(const char* prop, const char** context) override {
-        __system_property_get_context(prop, context);
+    void get_prop_context(const char* prop, const char** context, const char** filename) override {
+        __system_property_get_context(prop, context, filename);
     }
 };
 
@@ -319,8 +320,8 @@ void parse_prop_into(const char *filename, std::map<std::string, std::string> &m
     });
 }
 
-void get_prop_context(const char* prop, const char** context) {
-    get_impl()->get_prop_context(prop, context);
+void get_prop_context(const char* prop, const char** context, const char** filename) {
+    get_impl()->get_prop_context(prop, context, filename);
 }
 
 int resetprop_main(int argc, char *argv[]) {
@@ -378,7 +379,7 @@ int resetprop_main(int argc, char *argv[]) {
     case 1: {
         if (show_ctx) {
             const char* context;
-            get_prop_context(argv[0], &context);
+            get_prop_context(argv[0], &context, nullptr);
             if (!context)
                 return 1;
             printf("%s\n", context);

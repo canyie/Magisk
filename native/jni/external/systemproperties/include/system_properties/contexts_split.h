@@ -48,7 +48,7 @@ class ContextsSplit : public Contexts {
   virtual void FreeAndUnmap() override;
 
   // resetprop added
-  virtual void GetContextForName(const char* name, const char** context) override;
+  virtual void GetContextForName(const char* name, const char** context, const char** filename) override;
   ContextListNode* GetContextNodeForName(const char* name);
 
  private:

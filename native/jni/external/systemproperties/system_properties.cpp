@@ -401,10 +401,11 @@ int SystemProperties::Foreach(void (*propfn)(const prop_info* pi, void* cookie),
 }
 
 // resetprop added
-void SystemProperties::GetPropContext(const char* prop, const char** context) {
+void SystemProperties::GetPropContext(const char* prop, const char** context, const char** filename) {
   if (!initialized_) {
     if (context) *context = nullptr;
+    if (filename) *filename = nullptr;
     return;
   }
-  contexts_->GetContextForName(prop, context);
+  contexts_->GetContextForName(prop, context, filename);
 }

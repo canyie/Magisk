@@ -65,8 +65,9 @@ class ContextsPreSplit : public Contexts {
   }
 
   // resetprop added
-  virtual void GetContextForName(const char* name, const char** context) override {
+  virtual void GetContextForName(const char* name, const char** context, const char** filename) override {
     if (context) *context = nullptr;
+    if (filename) *filename = nullptr;
   }
 
  private:

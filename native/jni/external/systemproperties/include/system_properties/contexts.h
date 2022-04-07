@@ -44,5 +44,5 @@ class Contexts {
   virtual void FreeAndUnmap() = 0;
 
   // resetprop added
-  virtual void GetContextForName(const char* name, const char** context) = 0;
+  virtual void GetContextForName(const char* name, const char** context, const char** filename) = 0;
 };

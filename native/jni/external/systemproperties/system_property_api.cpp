@@ -110,8 +110,8 @@ uint32_t __system_property_serial(const prop_info* pi) {
 }
 
 __BIONIC_WEAK_FOR_NATIVE_BRIDGE
-void __system_property_get_context(const char* prop, const char** context) {
-  system_properties.GetPropContext(prop, context);
+void __system_property_get_context(const char* prop, const char** context, const char** filename) {
+  system_properties.GetPropContext(prop, context, filename);
 }
 
 __BIONIC_WEAK_FOR_NATIVE_BRIDGE
