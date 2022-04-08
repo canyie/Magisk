@@ -24,15 +24,18 @@ class InstallFragment : BaseFragment<FragmentInstallMd2Binding>() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        viewModel.step = savedInstanceState?.getInt(KEY_CURRENT_STEP, viewModel.step) ?: viewModel.step
         viewModel._method = savedInstanceState?.getInt(KEY_CURRENT_METHOD, -1) ?: -1
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
+        outState.putInt(KEY_CURRENT_STEP, viewModel.step)
         outState.putInt(KEY_CURRENT_METHOD, viewModel.method)
     }
 
     companion object {
+        private const val KEY_CURRENT_STEP = "current_step"
         private const val KEY_CURRENT_METHOD = "current_method"
     }
 }

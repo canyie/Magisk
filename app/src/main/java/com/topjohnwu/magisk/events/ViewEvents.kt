@@ -86,8 +86,9 @@ class AddHomeIconEvent : ViewEvent(), ContextExecutor {
 class SelectModuleEvent : ViewEvent(), FragmentExecutor {
     override fun invoke(fragment: BaseFragment<*>) {
         try {
-            fragment.apply {
-                activity?.getContent("application/zip") {
+            fragment.activity?.getContent("application/zip") {
+                // FIXME Replace the fragment with top fragment
+                fragment.apply {
                     MainDirections.actionFlashFragment(Const.Value.FLASH_ZIP, it).navigate()
                 }
             }

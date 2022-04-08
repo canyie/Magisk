@@ -23,7 +23,11 @@ import java.util.concurrent.TimeUnit
 
 abstract class BaseActivity : AppCompatActivity() {
 
-    private var permissionCallback: ((Boolean) -> Unit)? = null
+    companion object {
+        private var permissionCallback: ((Boolean) -> Unit)? = null
+        private var contentCallback: ((Uri) -> Unit)? = null
+    }
+
     private val requestPermission = registerForActivityResult(RequestPermission()) {
         permissionCallback?.invoke(it)
         permissionCallback = null
@@ -33,7 +37,6 @@ abstract class BaseActivity : AppCompatActivity() {
         permissionCallback = null
     }
 
-    private var contentCallback: ((Uri) -> Unit)? = null
     private val getContent = registerForActivityResult(GetContent()) {
         if (it != null) contentCallback?.invoke(it)
         contentCallback = null

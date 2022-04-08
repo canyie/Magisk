@@ -54,9 +54,14 @@ class InstallViewModel(
             }
         }
 
+    companion object {
+        @JvmField var _data : Uri? = null
+    }
+
     @get:Bindable
-    var data: Uri? = null
-        set(value) = set(value, field, { field = it }, BR.data)
+    var data: Uri?
+        get() = _data
+        set(value) = set(value, _data, { _data = it }, BR.data)
 
     @get:Bindable
     var notes: Spanned = SpannableStringBuilder()
