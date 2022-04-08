@@ -13,14 +13,17 @@ static void lazy_unmount(const char* mountpoint) {
 }
 
 #define TMPFS_MNT(dir) (mentry->mnt_type == "tmpfs"sv && str_starts(mentry->mnt_dir, "/" #dir))
+#define MIRROR_MNT() (mentry->mnt_type == "tmpfs"sv && str_starts(mentry->mnt_dir, mirror_mnt.data()))
 
 void revert_unmount() {
     vector<string> targets;
+    auto mirror_mnt = MAGISKTMP + "/" MIRRDIR;
 
     // Unmount dummy skeletons and MAGISKTMP
     targets.push_back(MAGISKTMP);
     parse_mnt("/proc/self/mounts", [&](mntent *mentry) {
-        if (TMPFS_MNT(system) || TMPFS_MNT(vendor) || TMPFS_MNT(product) || TMPFS_MNT(system_ext))
+        if (TMPFS_MNT(system) || TMPFS_MNT(vendor) || TMPFS_MNT(product) || TMPFS_MNT(system_ext)
+            || TMPFS_MNT(dev/__properties__) || MIRROR_MNT())
             targets.emplace_back(mentry->mnt_dir);
         return true;
     });
