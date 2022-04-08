@@ -5,20 +5,6 @@
 
 using namespace std;
 
-namespace {
-
-struct map_info {
-    uintptr_t start;
-    uintptr_t end;
-    uintptr_t off;
-    int perms;
-    unsigned long inode;
-
-    map_info() : start(0), end(0), off(0), perms(0), inode(0) {}
-};
-
-} // namespace
-
 template<typename Func>
 static void parse_maps(int pid, Func fn) {
     char file[32];
@@ -47,7 +33,7 @@ static void parse_maps(int pid, Func fn) {
     });
 }
 
-static vector<map_info> find_maps(const char *name) {
+std::vector<map_info> find_maps(const char *name) {
     vector<map_info> maps;
     parse_maps(getpid(), [=, &maps](const map_info &info, const char *path) -> bool {
         if (strcmp(path, name) == 0)

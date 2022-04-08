@@ -32,6 +32,18 @@ enum : int {
 #define ZLOGI(...) LOGI("zygisk32: " __VA_ARGS__)
 #endif
 
+struct map_info {
+    uintptr_t start;
+    uintptr_t end;
+    uintptr_t off;
+    int perms;
+    unsigned long inode;
+
+    map_info() : start(0), end(0), off(0), perms(0), inode(0) {}
+};
+
+std::vector<map_info> find_maps(const char *name);
+
 // Find the memory address + size of the pages matching name + inode
 std::pair<void*, size_t> find_map_range(const char *name, unsigned long inode);
 

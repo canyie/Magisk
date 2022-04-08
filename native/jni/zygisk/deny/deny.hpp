@@ -48,7 +48,8 @@ void ls_list(int client);
 // Utility functions
 bool is_deny_target(int uid, std::string_view process);
 
-void revert_unmount();
+void revert_unmount(std::vector<std::string> *prop_areas);
+void remap_props(std::vector<std::string> &areas);
 
 extern std::atomic<bool> denylist_enforced;
 extern std::atomic<int> cached_manager_app_id;

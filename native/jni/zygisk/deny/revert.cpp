@@ -4,6 +4,7 @@
 #include <utils.hpp>
 
 #include "deny.hpp"
+#include "zygisk/zygisk.hpp"
 
 using namespace std;
 
@@ -13,18 +14,21 @@ static void lazy_unmount(const char* mountpoint) {
 }
 
 #define TMPFS_MNT(dir) (mentry->mnt_type == "tmpfs"sv && str_starts(mentry->mnt_dir, "/" #dir))
-#define MIRROR_MNT() (mentry->mnt_type == "tmpfs"sv && str_starts(mentry->mnt_dir, mirror_mnt.data()))
 
-void revert_unmount() {
+void revert_unmount(std::vector<std::string> *prop_areas) {
     vector<string> targets;
     auto mirror_mnt = MAGISKTMP + "/" MIRRDIR;
 
     // Unmount dummy skeletons and MAGISKTMP
     targets.push_back(MAGISKTMP);
     parse_mnt("/proc/self/mounts", [&](mntent *mentry) {
-        if (TMPFS_MNT(system) || TMPFS_MNT(vendor) || TMPFS_MNT(product) || TMPFS_MNT(system_ext)
-            || TMPFS_MNT(dev/__properties__) || MIRROR_MNT())
+        if (TMPFS_MNT(system) || TMPFS_MNT(vendor) || TMPFS_MNT(product) || TMPFS_MNT(system_ext))
             targets.emplace_back(mentry->mnt_dir);
+        else if (TMPFS_MNT(dev/__properties__)) {
+            targets.emplace_back(mentry->mnt_dir);
+            if (prop_areas)
+                prop_areas->emplace_back(mentry->mnt_dir);
+        }
         return true;
     });
 
@@ -41,4 +45,26 @@ void revert_unmount() {
 
     for (auto &s : reversed(targets))
         lazy_unmount(s.data());
+}
+
+void remap_props(std::vector<std::string> &areas) {
+    for (auto file : areas) {
+        int fd = open(file.data(), O_RDONLY | O_CLOEXEC | O_NOFOLLOW);
+        if (fd == -1) {
+            // Property area no longer accessible by the process
+            continue;
+        }
+        auto all = find_maps(file.data());
+        if (all.empty()) {
+            continue;
+        }
+        for (auto info : all) {
+            auto size = info.end - info.start;
+            // Remap prop areas to redirect properties to the original
+            munmap(reinterpret_cast<void*>(info.start), size);
+            xmmap(reinterpret_cast<void*>(info.start), size, PROT_READ,
+                 MAP_SHARED | MAP_FIXED, fd, 0);
+        }
+        close(fd);
+    }
 }

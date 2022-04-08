@@ -152,7 +152,10 @@ DCL_HOOK_FUNC(int, unshare, int flags) {
     int res = old_unshare(flags);
     if (g_ctx && (flags & CLONE_NEWNS) != 0 && res == 0) {
         if (g_ctx->state[DO_UNMOUNT]) {
-            revert_unmount();
+            std::vector<std::string> prop_areas;
+            revert_unmount(&prop_areas);
+            if (!prop_areas.empty())
+                remap_props(prop_areas);
         } else {
             umount2("/system/bin/app_process64", MNT_DETACH);
             umount2("/system/bin/app_process32", MNT_DETACH);
