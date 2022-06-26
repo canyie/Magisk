@@ -11,7 +11,7 @@
 
     </data>
 
-    <FrameLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -34,6 +34,7 @@
             app:backgroundTint="?colorSurfaceSurfaceVariant"
             app:srcCompat="@drawable/ic_folder_list"
             app:tint="?colorPrimary"
+            app:layout_behavior="com.topjohnwu.magisk.widget.MoveUpwardBehavior"
             tools:layout_marginBottom="64dp" />
 
         <com.google.android.material.circularreveal.cardview.CircularRevealCardView
@@ -55,6 +56,6 @@
 
         </com.google.android.material.circularreveal.cardview.CircularRevealCardView>
 
-    </FrameLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </layout>
