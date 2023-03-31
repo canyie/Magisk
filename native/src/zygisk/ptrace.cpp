@@ -44,6 +44,14 @@ using namespace std;
 #define ARM_r0 regs[0]
 #endif
 
+long xptrace(int request, pid_t pid, void *addr, void *data) {
+    long ret = ptrace(request, pid, addr, data);
+    if (ret < 0)
+        PLOGE("ptrace %d", pid);
+    return ret;
+}
+
+
 bool _remote_read(int pid, uintptr_t addr, void *buf, size_t len) {
     for (size_t i = 0; i < len; i += sizeof(long)) {
         long data = xptrace(PTRACE_PEEKTEXT, pid, reinterpret_cast<void*>(addr + i));

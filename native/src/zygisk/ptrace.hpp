@@ -2,6 +2,11 @@
 
 #include <stdint.h>
 
+long xptrace(int request, pid_t pid, void *addr = nullptr, void *data = nullptr);
+static inline long xptrace(int request, pid_t pid, void *addr, uintptr_t data) {
+    return xptrace(request, pid, addr, reinterpret_cast<void *>(data));
+}
+
 // Write bytes to the remote process at addr
 bool _remote_write(int pid, uintptr_t addr, const void *buf, size_t len);
 #define remote_write(...) _remote_write(pid, __VA_ARGS__)
