@@ -129,6 +129,7 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := magiskpolicy
 LOCAL_STATIC_LIBRARIES := \
     libbase \
+    libbase \
     libpolicy \
     libpolicy-rs
 
@@ -144,6 +145,7 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := resetprop
 LOCAL_STATIC_LIBRARIES := \
     libbase \
+    libcompat \
     libnanopb \
     libsystemproperties \
     libmagisk-rs

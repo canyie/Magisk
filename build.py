@@ -200,7 +200,7 @@ def clean_elf():
                    'tools/termux-elf-cleaner/elf-cleaner.cpp',
                    'tools/termux-elf-cleaner/arghandling.c',
                    '-o', elf_cleaner])
-    args = [elf_cleaner, "--api-level", "23"]
+    args = [elf_cleaner]
     args.extend(op.join('native', 'out', arch, bin)
                 for arch in archs for bin in ['magisk', 'magiskpolicy'])
     execv(args)
