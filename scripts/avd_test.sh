@@ -176,14 +176,18 @@ export -f wait_for_bootanim
 
 set -xe
 
-case $(uname -m) in
-  'arm64'|'aarch64')
-    arch=arm64-v8a
-    ;;
-  *)
-    arch=x86_64
-    ;;
-esac
+if [ -n "$2" ]; then
+  arch=$2
+else
+  case $(uname -m) in
+    'arm64'|'aarch64')
+      arch=arm64-v8a
+      ;;
+    *)
+      arch=x86_64
+      ;;
+  esac
+fi
 
 yes | "$sdk" --licenses
 "$sdk" --channel=3 --update
