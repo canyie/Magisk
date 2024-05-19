@@ -157,19 +157,19 @@ bool MagiskD::post_fs_data() const {
     }
 
     if (!magisk_env()) {
-        LOGE("* Magisk environment incomplete, abort\n");
-        safe_mode = true;
-        return safe_mode;
+        // LOGE("* Magisk environment incomplete, abort\n");
+        // safe_mode = true;
+        // return safe_mode;
     }
 
-    if (check_safe_mode()) {
-        LOGI("* Safe mode triggered\n");
-        safe_mode = true;
-        // Disable all modules and zygisk so next boot will be clean
-        disable_modules();
-        set_db_settings(ZYGISK_CONFIG, false);
-        return safe_mode;
-    }
+    // if (check_safe_mode()) {
+    //     LOGI("* Safe mode triggered\n");
+    //     safe_mode = true;
+    //     // Disable all modules and zygisk so next boot will be clean
+    //     disable_modules();
+    //     set_db_settings(ZYGISK_CONFIG, false);
+    //     return safe_mode;
+    // }
 
     exec_common_scripts("post-fs-data");
     db_settings dbs;
