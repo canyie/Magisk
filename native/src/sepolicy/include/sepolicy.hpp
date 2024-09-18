@@ -42,6 +42,8 @@ struct sepolicy {
     void print_rules();
     void parse_statement(c_str statement);
 
+    uint64_t get_policy_version();
+
     // Operation on types
     void type(Str type, StrVec attrs);
     void attribute(Str names);

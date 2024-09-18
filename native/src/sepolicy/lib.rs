@@ -33,6 +33,7 @@ mod ffi {
         include!("include/sepolicy.hpp");
 
         type sepolicy;
+        fn get_policy_version(self: Pin<&mut sepolicy>) -> u64;
         fn allow(self: Pin<&mut sepolicy>, s: Vec<&str>, t: Vec<&str>, c: Vec<&str>, p: Vec<&str>);
         fn deny(self: Pin<&mut sepolicy>, s: Vec<&str>, t: Vec<&str>, c: Vec<&str>, p: Vec<&str>);
         fn auditallow(

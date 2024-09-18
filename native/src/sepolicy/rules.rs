@@ -80,10 +80,13 @@ impl SepolicyMagisk for sepolicy {
             // Just in case, make the domain permissive
             permissive([proc]);
 
-            // Allow us to do any ioctl
-            allowxperm([proc], ["fs_type", "dev_type", "file_type", "domain"],
-                ["blk_file", "fifo_file", "chr_file"], xall);
-            allowxperm([proc], [proc], ["tcp_socket", "udp_socket", "rawip_socket"], xall);
+            const POLICYDB_VERSION_XPERMS_IOCTL : u64 = 30;
+            if get_policy_version() >= POLICYDB_VERSION_XPERMS_IOCTL {
+                // Allow us to do any ioctl
+                allowxperm([proc], ["fs_type", "dev_type", "file_type", "domain"],
+                    ["blk_file", "fifo_file", "chr_file"], xall);
+                allowxperm([proc], [proc], ["tcp_socket", "udp_socket", "rawip_socket"], xall);
+            }
 
             // Let binder work with our processes
             allow(svcmgr, [proc], ["dir"], ["search"]);

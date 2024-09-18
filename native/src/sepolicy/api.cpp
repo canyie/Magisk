@@ -27,6 +27,10 @@ static void print_rule(const char *action, Args ...args) {
 #define print_rule(...) ((void) 0)
 #endif
 
+uint64_t sepolicy::get_policy_version() {
+    return impl->db->policyvers;
+}
+
 bool sepolicy::exists(const char *type) {
     return hashtab_search(impl->db->p_types.table, type) != nullptr;
 }
