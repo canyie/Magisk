@@ -2,6 +2,8 @@ use crate::{ffi::Xperm, sepolicy, SepolicyMagisk};
 use base::{set_log_level_state, LogLevel};
 use std::pin::Pin;
 
+const POLICYDB_VERSION_XPERMS_IOCTL : u64 = 30;
+
 macro_rules! rules {
     (@args all) => {
         vec![]
@@ -80,7 +82,6 @@ impl SepolicyMagisk for sepolicy {
             // Just in case, make the domain permissive
             permissive([proc]);
 
-            const POLICYDB_VERSION_XPERMS_IOCTL : u64 = 30;
             if get_policy_version() >= POLICYDB_VERSION_XPERMS_IOCTL {
                 // Allow us to do any ioctl
                 allowxperm([proc], ["fs_type", "dev_type", "file_type", "domain"],
